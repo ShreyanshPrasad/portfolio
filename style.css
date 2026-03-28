@@ -44,7 +44,10 @@
   --ink-2: #d4d4d4;
   --ink-3: #afafaf;
   --border: #1E1E35;
-  --line: #FFFFFF; /* White lines look striking in dark mode */
+  
+  /* Modified: Muted gray instead of white for less striking lines */
+  --line: #a1a1aa; 
+  
   --nav-bg: rgba(8, 8, 15, 0.92);
 
   --purple: #8B5CF6;
@@ -103,6 +106,9 @@ body::before {
 }
 
 /* ── NAV ── */
+.avatar{
+  border-radius: 50%; border: 2px solid var(--line); box-shadow: 2px 2px 0 var(--line);
+}
 nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
@@ -176,8 +182,9 @@ nav {
 .hero-role.r2 { background: var(--pink); color: #fff; }
 .hero-role.r3 { background: var(--teal); color: #12002E; }
 .hero-bio { font-size: 1.05rem; font-weight: 400; line-height: 1.75; color: var(--ink-2); max-width: 44ch; margin-bottom: 2.5rem; }
-
+.hero-first-name{ font-style: italic;}
 .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
 .btn-big {
   font-weight: 700; font-size: 0.88rem; letter-spacing: 0.04em;
   padding: 0.9rem 2.2rem; text-decoration: none; border: 2px solid var(--line);
@@ -194,11 +201,14 @@ nav {
 .skill-bubbles { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.5rem; }
 .sbub { font-weight: 600; font-size: 0.78rem; padding: 0.4rem 0.9rem; border: 2px solid var(--line); background: var(--bg); transition: transform 0.2s, background 0.2s; }
 .sbub:hover { background: var(--yellow); color: #12002E; transform: rotate(-2deg); }
-.sbub.s1 { background: rgba(108,33,244,0.1); }
-.sbub.s2 { background: rgba(255,45,120,0.1); }
-.sbub.s3 { background: rgba(0,212,180,0.1); }
-.sbub.s4 { background: rgba(255,107,53,0.1); }
+.sbub.s1 { background: rgba(228, 224, 235, 0.5); }
+.sbub.s2 { background: rgba(60, 162, 199, 0.4); }
+.sbub.s3 { background: rgba(51, 227, 200, 0.6); }
+.sbub.s4 { background: rgba(250, 72, 7, 0.7); }
 .sbub.s5 { background: rgba(255,225,55,0.3); }
+.sbub.s6 { background: rgba(162, 235, 224, 0.6); }
+.sbub.s7 { background: rgba(98, 203, 135, 0.8); }
+.sbub.s8 { background: rgba(171, 80, 136, 0.9); }
 
 .stat-bubbles { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.6rem; }
 .stbub { background: var(--line); color: var(--surface); padding: 1rem 0.5rem; text-align: center; border: 2px solid var(--line); }
@@ -208,8 +218,18 @@ nav {
 .stl { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 0.25rem; opacity: 0.8; display: block; }
 
 .sticker { position: absolute; font-size: 1.5rem; font-weight: 900; background: var(--yellow); color:#12002E; border: 2px solid var(--line); padding: 0.4rem 0.7rem; box-shadow: 3px 3px 0 var(--line); transform: rotate(var(--r)); }
-.stk1 { top: -18px; right: 20px; --r: 6deg; }
-.stk2 { bottom: -18px; left: 20px; --r: -4deg; background: var(--pink); color: #fff; }
+.stk1 { top: -22px; right: 20px; --r: 6deg; }
+.stk2 { bottom: -26px; left: 20px; --r: -4deg; background: var(--grad2); color: #fff; }
+
+/* Modified: Added backlighting highlight effect */
+.tech-stack-highlight {
+  position: relative; /* Ensure stickers stay on top */
+  z-index: 2; /* Raise card for effect */
+  /* Large, diffused purple glow */
+  box-shadow: 
+    0 0 100px 30px rgba(108, 33, 244, 0.25), 
+    0 0 150px 60px rgba(0, 212, 180, 0.15); 
+}
 
 /* ── MARQUEE ── */
 .marquee-wrap { overflow: hidden; background: var(--line); border-top: 2px solid var(--line); border-bottom: 2px solid var(--line); padding: 0.9rem 0; }
@@ -236,7 +256,7 @@ section { padding: 6rem 5vw; border-bottom: 2px solid var(--line); }
 .svc-card:nth-child(1) .svc-icon { background: rgba(108,33,244,0.12); }
 .svc-card:nth-child(2) .svc-icon { background: rgba(255,45,120,0.12); }
 .svc-card:nth-child(3) .svc-icon { background: rgba(0,212,180,0.12); }
-.svc-num { font-family: var(--serif); font-size: 2.5rem; font-weight: 700; font-style: italic; color: var(--border); line-height: 1; }
+.svc-num { font-family: var(--serif); font-size: 2.5rem; font-weight: 700; font-style: italic; color: var(--ink-3); line-height: 1; }
 .svc-title { font-family: var(--serif); font-size: 1.5rem; font-weight: 700; color: var(--ink); margin-bottom: 0.7rem; line-height: 1.2; }
 .svc-desc { font-size: 0.88rem; color: var(--ink-2); line-height: 1.75; font-weight: 400; }
 .svc-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.2rem; }
