@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>My Daily Routine</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: linear-gradient(160deg, #0a0f1e 0%, #0d1b2a 60%, #091524 100%);
+    min-height: 100vh;
+    font-family: 'DM Sans', sans-serif;
+    color: #e2e8f0;
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .container { max-width: 600px; margin: 0 auto; }
+
+  /* Header */
+  .header { text-align: center; margin-bottom: 2rem; }
+  .title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 8vw, 3rem);
+    font-weight: 900;
+    background: linear-gradient(90deg, #f97316, #fbbf24, #fb923c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.1;
+  }
+  .subtitle {
+    font-size: 0.8rem;
+    color: #64748b;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 0.4rem;
+  }
+  .divider {
+    width: 50px; height: 2px;
+    background: linear-gradient(90deg, #f97316, #fbbf24);
+    margin: 0.9rem auto 0;
+    border-radius: 2px;
+  }
+
+  /* Stats */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+    margin-bottom: 1.75rem;
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 0.85rem 0.5rem;
+    text-align: center;
+  }
+  .stat-icon { font-size: 1.3rem; margin-bottom: 0.3rem; }
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fbbf24;
+  }
+  .stat-label {
+    font-size: 0.65rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+  }
+
+  /* Filters */
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    justify-content: center;
+    margin-bottom: 1.75rem;
+  }
+  .filter-btn {
+    padding: 0.3rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.73rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: capitalize;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.05);
+    color: #94a3b8;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .filter-btn.active {
+    border-color: transparent;
+    color: #0a0f1e;
+    font-weight: 600;
+  }
+
+  /* Timeline */
+  .timeline { position: relative; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 58px;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(251,191,36,0.25) 10%, rgba(251,191,36,0.25) 90%, transparent);
+  }
+  .timeline-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-bottom: 0.65rem;
+    transition: transform 0.2s;
+  }
+  .timeline-item:active { transform: translateX(4px); }
+
+  .time-label {
+    width: 52px;
+    flex-shrink: 0;
+    text-align: right;
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: #64748b;
+    line-height: 1.3;
+  }
+  .time-label span { color: #475569; font-size: 0.62rem; }
+
+  .dot {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+
+  .card {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 0.7rem 0.85rem;
+  }
+  .card-inner { display: flex; align-items: center; gap: 0.55rem; }
+  .card-icon { font-size: 1.05rem; flex-shrink: 0; }
+  .card-text { flex: 1; min-width: 0; }
+  .card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    line-height: 1.2;
+  }
+  .card-desc {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-weight: 300;
+    margin-top: 0.1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .badge {
+    padding: 0.18rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.6rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.72rem;
+    color: #334155;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="title">Daily Routine</div>
+    <div class="subtitle">Student · Scholar · Academic</div>
+    <div class="divider"></div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-icon">🌅</div>
+      <div class="stat-value">4:30 AM</div>
+      <div class="stat-label">Wake Up</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📚</div>
+      <div class="stat-value">~6 hrs</div>
+      <div class="stat-label">Study</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🌙</div>
+      <div class="stat-value">11 PM</div>
+      <div class="stat-label">Lights Out</div>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <button class="filter-btn active" data-filter="all" onclick="filterItems(this)" style="background:#fbbf24;color:#0a0f1e;border-color:transparent;">All</button>
+    <button class="filter-btn" data-filter="morning" onclick="filterItems(this)">Morning</button>
+    <button class="filter-btn" data-filter="fitness" onclick="filterItems(this)">Fitness</button>
+    <button class="filter-btn" data-filter="study" onclick="filterItems(this)">Study</button>
+    <button class="filter-btn" data-filter="college" onclick="filterItems(this)">College</button>
+    <button class="filter-btn" data-filter="evening" onclick="filterItems(this)">Evening</button>
+    <button class="filter-btn" data-filter="night" onclick="filterItems(this)">Night</button>
+  </div>
+
+  <!-- Timeline -->
+  <div class="timeline" id="timeline">
+
+    <div class="timeline-item" data-cat="morning">
+      <div class="time-label">4:30<br><span>AM</span></div>
+      <div class="dot" style="background:#f97316;"></div>
+      <div class="card">
+        <div class="card-inner">
+          <span class="card-icon">☀️</span>
+          <div class="card-text">
+            <div class="card-name">Wake Up</div>
+            <div class="card-desc">Rise & shine — start the day with purpose</div>
+          </div>
+          <span class="badge" style="background:rgba(249,115,22,0.15);color:#f97316;">Morning</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item" data-cat="fitness">
+      <div class="time-label">5:00<br><span>AM</span></div>
+      <div class="dot" style="background:#22c55e;"></div>
+      <div class="card">
+        <div class="card-inner">
+          <span class="card-icon">🏃</span>
+          <div class="card-text">
+            <div class="card-name">Running</div>
+            <div class="card-desc">Morning run — energize body & mind</div>
+          </div>
+          <span class="badge" style="background:rgba(34,197,94,0.15);color:#22c55e;">Fitness</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item" data-cat="fitness">
+      <div class="time-label">6:30<br><span>AM</span></div>
+      <div class="dot" style="background:#22c55e;"></div>
+      <div class="card">
+        <div class="card-inner">
+          <span class="card-icon">🧘</span>
+          <div class="card-text">
+            <div class="card-name">Meditation</div>
+            <div class="card-desc">Return, cool down & meditate</div>
+          </div>
+          <span class="badge" style="background:rgba(34,197,94,0.15);color:#22c55e;">Fitness</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item" data-cat="morning">
+      <div class="time-label">7:30<br><span>AM</span></div>
+      <div class="dot" style="background:#f97316;"></div>
+      <div class="card">
+        <div class="card-inner">
+          <span class="card-icon">🍳</span>
+          <div class="card-text">
+            <div class="card-name">Bath & Breakfast</div>
+            <div class="card-desc">Refresh, nourish, prepare</div>
+          </div>
+          <span class="badge" style="background:rgba(249,115,22,0.15);color:#f97316;">Morning</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item" data-cat="study">
+      <div class="time-label">9:00<br><span>AM</span></div>
+      <div class="dot" style="background:#3b82f6;"></div>
+      <div class="card">
+        <div class="card-inner">
+          <span class="card-icon">📖</span>
+          <div class="card-text">
+            <div class="card-name">Self Study</div>
+            <div class="card-desc">Morning study block — peak focus time</div>
+          </div>
+          <span class="badge" style="background:rgba(59,130,246,0.15);color:#3b82f6;">Study</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item" data-cat="college">
+      <div class="time-label">9:10<br><span>AM</span></div>
+      <div class="dot" style="background:#a855f7;"></div>
+      <div class="card">
+        <div class="card-inner">
+          <span class="card-icon">🎒</span>
+          <div class="card-text">
+            <div class="card-name">Leave for College</div>
+            <div class="card-desc">Get ready & head to campus</div>
+          </div>
+          <span class="badge" style="background:rgba(168,85,247,0.15);color:#a855f7;">College</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item" data-cat="college">
+      <div class="time-label">9:20<br><span>AM</span></div>
+      <div class="dot" style="background:#a855f7;"></div>
+      <div class="card">
+        <div class="card-inner">
+          <span class="card-icon">🏛️</span>
+          <div class="card-text">
+            <div class="card-name">College Begins</div>
+            <div class="card-desc">Classes & academic duties</div>
+          </div>
+          <span class="badge" style="background:rgba(168,85,247,0.15);color:#a855f7;">College</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item" data-cat="college">
+      <div class="time-label">4:30<br><span>PM</span></div>
+      <div class="dot" style="background:#a855f7;"></div>
+      <div class="card">
+        <div class="card-inner">
+          <span class="card-icon">✅</span>
+          <div class="card-text">
+            <div class="card-name">College Ends</div>
+            <div class="card-desc">Wrap up for the day</div>
+          </div>
+          <span class="badge" style="background:rgba(168,85,247,0.15);color:#a855f7;">College</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item" data-cat="evening">
+      <div class="time-label">4:45<br><span>PM</span></div>
+      <div class="dot" style="background:#f43f5e;"></div>
+      <div class="card">
+        <div class="card-inner">
+          <span class="card-icon">🏠</span>
+          <div class="card-text">
+            <div class="card-name">Return Home</div>
+            <div class="card-desc">Back to campus room</div>
+          </div>
+          <span class="badge" style="background:rgba(244,63,94,0.15);color:#f43f5e;">Evening</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item" data-cat="fitness">
+      <div class="time-label">5:15<br><span>PM</span></div>
+      <div class="dot" style="background:#22c55e;"></div>
+      <div class="card">
+        <div class="card-inner">
+          <span class="card-icon">🧘</span>
+          <div class="card-text">
+            <div class="card-name">Relax & Meditate</div>
+            <div class="card-desc">Unwind, reset & breathe</div>
+          </div>
+          <span class="badge" style="background:rgba(34,197,94,0.15);color:#22c55e;">Fitness</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item" data-cat="study">
+      <div class="time-label">5:30<br><span>PM</span></div>
+      <div class="dot" style="background:#3b82f6;"></div>
+      <div class="card">
+        <div class="card-inner">
+          <span class="card-icon">📚</span>
+          <div class="card-text">
+            <div class="card-name">Self Study</div>
+            <div class="card-desc">Evening study block I (5:30–7:30)</div>
+          </div>
+          <span class="badge" style="background:rgba(59,130,246,0.15);color:#3b82f6;">Study</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item" data-cat="evening">
+      <div class="time-label">8:00<br><span>PM</span></div>
+      <div class="dot" style="background:#f43f5e;"></div>
+      <div class="card">
+        <div class="card-inner">
+          <span class="card-icon">🍽️</span>
+          <div class="card-text">
+            <div class="card-name">Dinner</div>
+            <div class="card-desc">Nourish & recharge</div>
+          </div>
+          <span class="badge" style="background:rgba(244,63,94,0.15);color:#f43f5e;">Evening</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item" data-cat="study">
+      <div class="time-label">8:30<br><span>PM</span></div>
+      <div class="dot" style="background:#3b82f6;"></div>
+      <div class="card">
+        <div class="card-inner">
+          <span class="card-icon">📝</span>
+          <div class="card-text">
+            <div class="card-name">Self Study</div>
+            <div class="card-desc">Evening study block II (8:30–10:30)</div>
+          </div>
+          <span class="badge" style="background:rgba(59,130,246,0.15);color:#3b82f6;">Study</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item" data-cat="night">
+      <div class="time-label">10:30<br><span>PM</span></div>
+      <div class="dot" style="background:#818cf8;"></div>
+      <div class="card" style="background:rgba(30,27,75,0.45);">
+        <div class="card-inner">
+          <span class="card-icon">🌙</span>
+          <div class="card-text">
+            <div class="card-name">Wind Down</div>
+            <div class="card-desc">Wrap up studies, prepare for bed</div>
+          </div>
+          <span class="badge" style="background:rgba(129,140,248,0.15);color:#818cf8;">Night</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item" data-cat="night">
+      <div class="time-label">11:00<br><span>PM</span></div>
+      <div class="dot" style="background:#818cf8;"></div>
+      <div class="card" style="background:rgba(30,27,75,0.45);">
+        <div class="card-inner">
+          <span class="card-icon">😴</span>
+          <div class="card-text">
+            <div class="card-name">Lights Out</div>
+            <div class="card-desc">Sleep — recover & grow</div>
+          </div>
+          <span class="badge" style="background:rgba(129,140,248,0.15);color:#818cf8;">Night</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">Discipline is the bridge between goals & accomplishment</div>
+
+</div>
+
+<script>
+  const filterColors = {
+    all: { bg: '#fbbf24', color: '#0a0f1e' },
+    morning: { bg: '#f97316', color: '#0a0f1e' },
+    fitness: { bg: '#22c55e', color: '#0a0f1e' },
+    study:   { bg: '#3b82f6', color: '#fff' },
+    college: { bg: '#a855f7', color: '#fff' },
+    evening: { bg: '#f43f5e', color: '#fff' },
+    night:   { bg: '#818cf8', color: '#0a0f1e' },
+  };
+
+  function filterItems(btn) {
+    const filter = btn.dataset.filter;
+    // Update buttons
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.remove('active');
+      b.style.background = 'rgba(255,255,255,0.05)';
+      b.style.color = '#94a3b8';
+      b.style.borderColor = 'rgba(255,255,255,0.12)';
+    });
+    btn.classList.add('active');
+    btn.style.background = filterColors[filter].bg;
+    btn.style.color = filterColors[filter].color;
+    btn.style.borderColor = 'transparent';
+
+    // Show/hide items
+    document.querySelectorAll('.timeline-item').forEach(item => {
+      if (filter === 'all' || item.dataset.cat === filter) {
+        item.classList.remove('hidden');
+      } else {
+        item.classList.add('hidden');
+      }
+    });
+  }
+</script>
+</body>
+</html>
